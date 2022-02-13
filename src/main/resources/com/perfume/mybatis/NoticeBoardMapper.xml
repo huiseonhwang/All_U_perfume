@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.perfume.mybatis.NoticeBoardMapper">
+	<select id = "getList" resultType="com.perfume.beans.BoardDTO">
+	<![CDATA[ 
+		select * from tbl_board where boardnum = 3 order by b_number desc
+	]]>
+	</select>
+	
+	<!--  게시글 작성  -->
+	<insert id="noticeinsert" parameterType="com.perfume.beans.BoardDTO">
+		insert into tbl_board(boardnum,b_number,writer,auth, password, subject, content) 
+			values('3',SEQ_TBL_BOARD.nextval,#{writer, jdbcType=VARCHAR},'관리자',#{password, jdbcType=VARCHAR},#{subject, jdbcType=VARCHAR},#{content, jdbcType=VARCHAR})
+	</insert>
+	
+	<!--  게시글 출력 -->
+	<select id="noticeContent" resultType="com.perfume.beans.BoardDTO">
+		select * from tbl_board where b_number = #{b_number}
+	</select>
+	
+	<!--  게시글 삭제 -->
+	<delete id="noticedelete">
+		delete tbl_board where b_number = #{b_number}
+	</delete>
+	
+	<!--  게시글 수정  -->
+	<update id="noticeupdate">
+		update tbl_board set subject=#{subject}, content=#{content}, reg_date = sysdate 
+			where b_number = #{b_number}
+	</update>
+	
+	<!-- 게시글 조회수 증가 -->
+	<update id="readcount">
+		update tbl_board set readcount = readcount + 1 where b_number = #{b_number}
+	</update>
+	
+<!-- 키워드 검색 -->
+     <select id="selectNoticeBoard" resultType="com.perfume.beans.BoardDTO" parameterType="com.perfume.beans.SearchCriteria">
+   	 <![CDATA[
+    	select rm, b_number, subject, content, writer, auth, reg_date, readcount from
+       		(select rownum rm, b_number, subject, content, writer, auth, reg_date, readcount from 
+            	(select * from tbl_board where 1 = 1 and boardNum = 3]]>
+             <include refid="search"></include> <![CDATA[ 
+             	order by b_number desc)
+       		 order by b_number desc) 
+    	where rm between #{rowStart} and #{rowEnd}
+    ]]>
+    </select>
+	
+	<select id="countNoticeBoard" parameterType="com.perfume.beans.SearchCriteria" resultType="int">
+		select count (*) from tbl_board where boardnum = 3
+			<include refid="search"></include>	
+		   		AND b_number > 0
+	</select>
+	 
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 's'.toString()">AND subject LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">AND CONTENT LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'sc'.toString()">AND (subject LIKE '%' || #{keyword} || '%') or (CONTENT LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	
+</mapper>
+	

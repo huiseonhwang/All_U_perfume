@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.perfume.mybatis.MypageMapper">
+
+	<insert id="wishRegister">
+		insert into tbl_wish(writer , f_number) values(#{writer},#{f_number})
+	</insert>
+
+
+	<select id = "wishSearch" resultType="com.perfume.beans.PerfumeDTO">	
+		select * from tbl_perfume where f_number = #{f_number}
+	</select>
+
+
+
+
+</mapper>

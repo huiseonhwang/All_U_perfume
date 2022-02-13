@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="customSuccess"  class="com.security.bean.CustomLoginHandler" />
+	<!-- <bean id="customNoop" class="com.security.bean.CustomNoopEncoder"/> -->
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	
+	<security:http>
+		<security:intercept-url pattern="/security/all" access="permitAll" />
+		<security:intercept-url pattern="/security/member" access="hasRole('ROLE_MEMBER')" />
+		<security:intercept-url pattern="/security/admin" access="hasRole('ROLE_ADMIN')" />
+		
+		<security:form-login login-page="/security/login" authentication-success-handler-ref="customSuccess"/>
+		
+		<security:logout logout-url="/security/logout" invalidate-session="true" delete-cookies="remember-me, JSESSIONID"/>
+		
+		
+		<security:access-denied-handler error-page="/security/error403" />
+		
+		<security:remember-me data-source-ref="dataSource" token-validity-seconds="86400"/>
+		
+		<!-- CSRF 설정  --> 
+		<security:csrf disabled="true"/>
+		
+	</security:http>
+	
+	<security:authentication-manager>
+		<security:authentication-provider>
+			
+			<security:jdbc-user-service data-source-ref="dataSource"
+			users-by-username-query="select id, pw,enabled from security_member where id = ?"
+			authorities-by-username-query="select id, auth from security_auth where id = ?"/>
+			
+			<!-- 패스워드 저장 용도로 만들어진 해시함수, 특정 문자열을 암호화하고, 암호화된 패스워드는 확인 용도로만 쓰이며 되돌릴 수 없다. -->
+			<security:password-encoder ref="bcryptPasswordEncoder"/>
+			<!-- <security:password-encoder ref="customNoop"/> -->
+			
+			<!-- <security:user-service>
+				<security:user name="member" password="{noop}1234" authorities="ROLE_MEMBER"/>
+				<security:user name="admin" password="{noop}1234" authorities="ROLE_MEMBER,ROLE_ADMIN"/>
+			</security:user-service>
+			-->
+			
+		</security:authentication-provider>
+	</security:authentication-manager>
+					
+</beans>
+
+
+
+

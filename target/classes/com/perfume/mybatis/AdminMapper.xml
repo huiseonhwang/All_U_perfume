@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.perfume.mybatis.AdminMapper">
+	
+	<select id = "adminLoginCheck" resultType="int">
+		select count(*) from tbl_admin where aid =#{aid} and pw = #{pw} and auth = '관리자'
+	</select>
+	
+	<!-- 회원 강제 탈퇴 mapper -->
+	<delete id = "member_delete"  >
+		delete from tbl_member
+			where id = #{id}
+	</delete>
+		
+</mapper>
