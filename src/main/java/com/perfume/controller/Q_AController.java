@@ -44,6 +44,9 @@ public class Q_AController {
 	
 	@Setter(onMethod_=@Autowired)
 	private Q_ABoardService q_aservice;
+	@Autowired
+	private RecommendationBoardService service;
+	private int count;
 	
 
 	// Q_A 내용 보기 + 조뢰수 증가 + 페이징 처리
@@ -54,24 +57,41 @@ public class Q_AController {
 		return "board/q_a/q_aContent";
 	}
 	
-	// Q_A 글 작성 Form
-	@RequestMapping("q_a/write")
-	public String writeForm(Model model, BoardDTO boardDTO) {
-		return "board/q_a/write";
-	}
-		
-	// Q_A 글 작성 Pro
-	@RequestMapping("q_a/writePro") 
-	public String writePro(Model model, BoardDTO boardDTO) {
+	@RequestMapping("q_a/write") 
+	public String re_write(Model model, BoardDTO boardDTO) {
+		return "board/q_a/write"; 
+		}
+	
+	@RequestMapping("q_a/writePro")
+	public String writePro(BoardDTO boardDTO, HttpServletRequest request, Model model) {
+		// boardDTO.setReg_date(boardDTO);
+		model.addAttribute(boardDTO);
+		int number = 0;
+		int max = q_aservice.q_amaxNum();
+		if (max > 0) 
+			number=max+1;
+		else
+			number=1; 
+		if (boardDTO.getB_number() != 0) {
+			q_aservice.q_astepUpdate(boardDTO);
+			boardDTO.setRe_step(boardDTO.getRe_step()+1);
+			boardDTO.setRe_level(boardDTO.getRe_level()+1);
+		} else {
+			boardDTO.setRef(number);
+			boardDTO.setRe_level(0);
+			boardDTO.setRe_step(0);
+		}
 		model.addAttribute("result", q_aservice.q_ainsert(boardDTO));
-		return "board/q_a/writePro";	
+		return "board/q_a/writePro";
 	}
 	
 	// Q_A 글 수정 Form
-	
 	@RequestMapping("q_a/update")
 	public String updateForm(Model model, BoardDTO boardDTO) {
 		model.addAttribute("boardDTO", q_aservice.q_aupdate(boardDTO));
+		log.info(" ==========  글 제목이 넘어가는지 ========== " + boardDTO.getSubject());
+		log.info(" ========== 글 내용이 넘어가는지 ========== " + boardDTO.getContent());
+		log.info(" ==========  작성자가 넘어가는지 ========== " + boardDTO.getWriter());
 		return "board/q_a/update";
 	}
 	
@@ -99,6 +119,8 @@ public class Q_AController {
 	@RequestMapping("q_a/list")
 	public String list(Model model, Paging pa, BoardDTO boardDTO, MemberDTO memberDTO, HttpSession session, SearchCriteria scri) {
 		model.addAttribute("q_a_list",q_aservice.selectQ_aBoard(scri));
+		count = q_aservice.countQ_aBoard(scri); // count = 0 -> 게시글이 없습니다.
+		model.addAttribute("count", count);
 		session.setAttribute("id", memberDTO.getId());
 		session.setAttribute("kid", memberDTO.getId());
 		Pagemaker pagemaker = new Pagemaker(); // 객체생성
@@ -119,31 +141,5 @@ public class Q_AController {
 		return "1";
 	}
 	
-	@RequestMapping("q_a/re_write") 
-	public String re_write(Model model) { 
-		//원글의 정보를 답글 쓰기 화면에서 알 수 있도록 한다. 
-		return "board/q_a/re_write"; 
-		}
-	
-	@RequestMapping("q_a/re_writePro")
-	public String writePro(BoardDTO boardDTO, HttpServletRequest request) {
-		// boardDTO.setReg_date(boardDTO);
-		int b_number = 0;
-		int max = q_aservice.maxNum();
-		if (max > 0) 
-			b_number=max+1;
-		else
-			b_number=1; 
-		if (boardDTO.getB_number() != 0) {
-			q_aservice.stepUpdate(boardDTO);
-			boardDTO.setRe_step(boardDTO.getRe_step()+1);
-			boardDTO.setRe_level(boardDTO.getRe_level()+1);
-		} else {
-			boardDTO.setRef(b_number);
-			boardDTO.setRe_level(0);
-			boardDTO.setRe_step(0);
-		}
-		q_aservice.insertArticle(boardDTO);
-		return "board/q_a/re_writePro";
-	}
+
 }

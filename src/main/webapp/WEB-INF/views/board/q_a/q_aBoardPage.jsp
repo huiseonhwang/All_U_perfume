@@ -70,14 +70,14 @@
 		<input type = "submit" value = "글 작성" />
 	</form>
 
-
+<link rel="stylesheet" href="/resources/css/board.css">
 <table border = "1" >
+	<div class = "body">
 	<tr>
 		<c:if test="${pageMaker.totalCount == 0}">
     		<p>작성된 게시글이 없습니다.</p>
 		</c:if>
 		<c:if test="${pageMaker.totalCount != 0}">
-		<th> <input id = "allCheck" type = "checkbox" name = "allCheck"/> </th>
 		<th> 글번호 </th>
 		<th> 글제목 </th>
 		<th> 작성자 </th>
@@ -87,7 +87,6 @@
 	</tr> 
 		<c:forEach items="${q_a_list}" var="boardDTO" > 
 		<tr>
-		<td> <input name = "RowCheck" type = "checkbox" value="${boardDTO.b_number}"/></td>
 		<td> ${boardDTO.b_number} </td>
 		<td> <a href="/perfume/q_a/q_aContent?b_number=${boardDTO.b_number}">${boardDTO.subject}</a> </td>
 		<td> ${boardDTO.writer} </td>
@@ -95,8 +94,9 @@
 		<td> ${boardDTO.readcount} </td>
 	</tr>
 	</c:forEach>
+	</div>
 </table>
-
+	<div class = "body">
 	<form action = "/perfume/q_a/q_aBoardPage" method = "post">
 		<input type = "hidden" name = "pageNum" value = "1">
 		<input type = "hidden" name = "amount" value = "10">
@@ -122,7 +122,7 @@
       });   
     </script>
   </div>
-
+</div>
 <div id="page">
 	<ul>
 		<c:if test="${pageMaker.prev}">
@@ -138,4 +138,5 @@
 		</c:if>
 	</ul>
 
+</div>
 </div>

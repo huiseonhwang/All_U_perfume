@@ -18,11 +18,6 @@ public class Q_ABoardServiceImpl implements Q_ABoardService {
 	@Setter(onMethod_=@Autowired)
 	private Q_ABoardMapper qamapper;
 	
-	@Override
-	public int q_ainsert(BoardDTO board) {
-		// TODO Auto-generated method stub
-		return qamapper.q_ainsert(board);
-	}
 
 	@Override
 	public BoardDTO q_aContent(BoardDTO board) {
@@ -79,22 +74,23 @@ public class Q_ABoardServiceImpl implements Q_ABoardService {
 		return qamapper.updateQ_aReSeq(board);
 	}
 
+
 	@Override
-	public int maxNum() {
+	public int q_amaxNum() {
 		// TODO Auto-generated method stub
-		return qamapper.maxNum();
+		return qamapper.q_amaxNum();
 	}
 
 	@Override
-	public void stepUpdate(BoardDTO dto) {
+	public void q_astepUpdate(BoardDTO dto) {
 		// TODO Auto-generated method stub
-		qamapper.stepUpdate(dto);
+		qamapper.q_astepUpdate(dto);
 	}
 
 	@Override
-	public void insertArticle(BoardDTO dto) {
+	public int q_ainsert(BoardDTO dto) {
 		// TODO Auto-generated method stub
-		qamapper.insertArticle(dto);
+		return qamapper.q_ainsert(dto);
 	}
 
 

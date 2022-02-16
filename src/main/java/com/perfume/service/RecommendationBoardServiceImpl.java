@@ -49,11 +49,11 @@ public class RecommendationBoardServiceImpl implements RecommendationBoardServic
 		return recommendationmapper.recommendationupdate(board);
 	}
 
-//	@Override
-//	public int readcount(int b_number) {
-//		// TODO Auto-generated method stub
-//		return recommendationmapper.readcount(b_number);
-//	}
+	@Override
+	public int readcount(int b_number) {
+		// TODO Auto-generated method stub
+		return recommendationmapper.readcount(b_number);
+	}
 
 	// 게시글 검색
 	@Override

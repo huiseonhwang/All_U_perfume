@@ -14,6 +14,6 @@
     	<input type ="hidden" name ="auth" value="${boardDTO.auth}" />  <br />
     	내 용 : <textarea rows="10" cols="20" name="content">${boardDTO.content }</textarea> <br />
     	첨부파일 : ${boardDTO.filename} <br /> 
-    		   <input type="submit" value="글 수정" />
+    	<input type="submit" value="글 수정" />
     </form>
     <a href ="/perfume/recommendation/list"> 글 목록 </a>

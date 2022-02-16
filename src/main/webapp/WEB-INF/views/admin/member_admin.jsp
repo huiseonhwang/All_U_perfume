@@ -19,8 +19,6 @@
 <form action="member_admin_pro" method = "post" >
 	회원 아이디 : <input type = "text" name = "id" placeholder="탈퇴시킬 회원의 아이디를 입력하세요."> <br/>
 	<input type = "submit" value = "회원 강제 탈퇴" /><br/>
-	
-	<!--  id 유효성 검사 -->
 </form>
 	
 </c:if>

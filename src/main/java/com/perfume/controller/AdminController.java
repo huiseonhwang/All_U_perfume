@@ -68,6 +68,13 @@ public class AdminController {
 		}
 		return "admin/loginPro";
 	}
+	
+	// 관리자 로그아웃
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "admin/logout";
+	}
 
 	// 관리자 회원 강제 탈퇴 부분
 	@RequestMapping("member_admin")

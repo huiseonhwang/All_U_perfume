@@ -8,8 +8,6 @@ import com.perfume.beans.SearchCriteria;
 
 
 public interface Q_ABoardMapper {
-	public int q_ainsert(BoardDTO board);
-	
 	public BoardDTO q_aContent(BoardDTO board);
 	
 	public int q_adelete(String b_number);
@@ -35,8 +33,8 @@ public interface Q_ABoardMapper {
 	public int updateQ_aReSeq(BoardDTO board);
 	
 	
-	public int maxNum();
-	public void stepUpdate(BoardDTO dto);
-	public void insertArticle(BoardDTO dto);
+	public int q_amaxNum();
+	public void q_astepUpdate(BoardDTO dto);
+	public int q_ainsert(BoardDTO dto);
 	
 }

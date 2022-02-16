@@ -12,7 +12,12 @@
 		<input type="hidden" name="b_number" value="${boardDTO.ref}">
 		<input type="hidden" name="b_number" value="${boardDTO.re_step}">
 		<input type="hidden" name="b_number" value="${boardDTO.re_level}">
-    	제 목 : <input type="text" name="subject" /> 
+	<c:if test="${boardDTO.b_number == 0}">
+    	<input type="text" size="40" maxlength="50" name="subject"></td>
+    </c:if>
+    <c:if test="${boardDTO.b_number != 0}">
+    	<input type="text" size="40" maxlength="50" name="subject" value="[답변]">
+    </c:if>
     	작성자 : <input type = "text" name = "writer">
     	비밀번호 : <input type = "password" name = "password">
     	내 용 : <textarea rows="10" cols="20" name="content"></textarea> <br />

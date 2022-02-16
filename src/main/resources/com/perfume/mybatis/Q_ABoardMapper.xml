@@ -11,27 +11,34 @@
 	]]>
 	</select>
 	
-	<!--  게시글 작성  -->
+	<!--  게시글 작성  
 	<insert id="q_ainsert" parameterType="com.perfume.beans.BoardDTO">
-		insert into tbl_board(boardnum,b_number,writer, password, subject, content) 
-			values('1',SEQ_TBL_BOARD.nextval,#{writer, jdbcType=VARCHAR},#{password, jdbcType=VARCHAR},#{subject, jdbcType=VARCHAR},#{content, jdbcType=VARCHAR})
+		insert into tbl_board(boardnum,b_number,writer, password, subject, content, ref, re_step, re_level) 
+			values('1',SEQ_TBL_BOARD.nextval,#{writer, jdbcType=VARCHAR},#{password, jdbcType=VARCHAR},
+			#{subject, jdbcType=VARCHAR},#{content, jdbcType=VARCHAR},#{ref}, #{re_step}, #{re_level} )
 	</insert>
+	
+	-->
+	
+	<!--  게시글 수정  -->
+	<update id="q_aupdate">
+		update tbl_board set subject=#{subject}, content=#{content}, reg_date = sysdate 
+			where b_number = #{b_number}
+	</update>
+	
 	
 	<!--  게시글 출력 -->
 	<select id="q_aContent" resultType="com.perfume.beans.BoardDTO">
 		select * from tbl_board where b_number = #{b_number}
 	</select>
 	
+	
+	
 	<!--  게시글 삭제 -->
 	<delete id="q_adelete">
 		delete tbl_board where b_number = #{b_number}
 	</delete>
 	
-	<!--  게시글 수정  -->
-	<update id="a_qnupdate">
-		update tbl_board set subject=#{subject}, content=#{content}, reg_date = sysdate 
-			where b_number = #{b_number}
-	</update>
 	
 	<!-- 게시글 조회수 증가 -->
 	<update id="q_areadcount">
@@ -41,15 +48,16 @@
 <!-- 키워드 검색 -->
     <select id="selectQ_aBoard" resultType="com.perfume.beans.BoardDTO" parameterType="com.perfume.beans.SearchCriteria">
    	 <![CDATA[
-    	select rm, b_number, subject, content, writer, reg_date, readcount, ref, re_step, re_level from
-       		(select rownum rm, b_number, subject, content, writer, reg_date, readcount, ref, re_step, re_level from 
-            	(select * from tbl_board where 1 = 1 and boardNum = 1]]>
+    	select * from ( 
+    		select rownum rm, b_number, subject, content, writer, reg_date, readcount, ref, re_step, re_level from 
+    			(select * from tbl_board where 1 = 1 and boardNum = 1]]>
              <include refid="search"></include> <![CDATA[ 
-             	order by b_number desc)
-       		 order by b_number desc) 
+             	order by ref desc, re_step asc )
+       		 order by ref desc, re_step asc ) 
     	where rm between #{rowStart} and #{rowEnd} 
     ]]>
     </select>
+    
 	
 	<select id="countQ_aBoard" parameterType="com.perfume.beans.SearchCriteria" resultType="int">
 		select count (*) from tbl_board where boardnum = 1
@@ -83,7 +91,7 @@
 	</select>
 	-->
 	
-	<!--  답글 입력 -->
+	<!--  답글 입력 
 	<insert id = "re_Q_a_Insert" parameterType = "com.perfume.beans.BoardDTO">
 		insert into tbl_board(boardnum,b_number, ref, re_step, depth, writer, password, subject, content) 
 			values('1',SEQ_TBL_BOARD.nextval, #{ref}, #{re_step}, #{depth}+1, #{writer, jdbcType=VARCHAR},
@@ -92,39 +100,51 @@
   			select max(b_number) as b_number FROM tbl_board
    		</selectKey>	
 	</insert>
+	-->
 	
+	<!-- 원글의 step보다 더 큰 step을 가진 글이 있다면 그 글들의 step을 먼저 +1 한다. -->
+	<insert id="re_Q_a_Insert">
+	 <![CDATA[ {CALL DECLARE BEGIN 
+	 	UPDATE tbl_board SET re_step = re_step + 1 
+	 		WHERE ref = #{ref } AND re_step > #{re_step }; 
+	 			INSERT INTO tbl_board (b_number, writer, ref, subject, content , re_step, re_level) 
+	 				VALUES (seq_tbl_board.NEXTVAL, #{writer}, #{ref }, #{subject }, #{content }, #{writer }, #{re_step } + 1, #{re_level } + 1); END} ]]> 
+	 </insert>
+
+
 	
-	
-	<!--  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+	<!--  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
 	
 		<select id="getArticles" resultType="com.perfume.beans.BoardDTO">
 		<![CDATA[
 			select * from (
-				select num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip,readcount,rownum r from (
+				select b_number,writer,subject,password,reg_date,ref,re_step,re_level,content,ip,readcount,rownum r from (
 					select * from board order by ref desc, re_step asc) 
 				order by ref desc, re_step asc ) 
 			where r >= #{startRow} and r <= #{endRow} 
 		]]>
 	</select>
 	
-	<select id="maxNum" resultType="int">
+	-->
+	
+	<select id="q_amaxNum" resultType="int">
 		select max(b_number) from tbl_board
 	</select>
 	
-	<update id="stepUpdate">
+	<update id="q_astepUpdate">
 		update tbl_board set re_step=re_step+1 where ref= #{ref} and re_step> #{re_step}
 	</update>
-	<insert id="insertArticle">
-		insert into board(b_number,writer,subject,password,reg_date,ref,re_step,re_level,content) 
-		values(SEQ_TBL_BOARD.NEXTVAL,
+	<insert id="q_ainsert">
+		insert into tbl_board(boardNum,b_number,writer,subject,password,ref,re_step,re_level,content) 
+		values('1',SEQ_TBL_BOARD.NEXTVAL,
 				#{writer},
 				#{subject},
 				#{password},
-				#{reg_date},
 				#{ref},
 				#{re_step},
 				#{re_level},
 				#{content}
 				)
 	</insert>
+	
 </mapper>

@@ -13,8 +13,8 @@
 	
 	<!--  게시글 작성  -->
 	<insert id="noticeinsert" parameterType="com.perfume.beans.BoardDTO">
-		insert into tbl_board(boardnum,b_number,writer,auth, password, subject, content) 
-			values('3',SEQ_TBL_BOARD.nextval,#{writer, jdbcType=VARCHAR},'관리자',#{password, jdbcType=VARCHAR},#{subject, jdbcType=VARCHAR},#{content, jdbcType=VARCHAR})
+		insert into tbl_board(boardnum,b_number,writer, password, subject, content) 
+			values('3',SEQ_TBL_BOARD.nextval,#{writer, jdbcType=VARCHAR},#{password, jdbcType=VARCHAR},#{subject, jdbcType=VARCHAR},#{content, jdbcType=VARCHAR})
 	</insert>
 	
 	<!--  게시글 출력 -->
@@ -41,8 +41,8 @@
 <!-- 키워드 검색 -->
      <select id="selectNoticeBoard" resultType="com.perfume.beans.BoardDTO" parameterType="com.perfume.beans.SearchCriteria">
    	 <![CDATA[
-    	select rm, b_number, subject, content, writer, auth, reg_date, readcount from
-       		(select rownum rm, b_number, subject, content, writer, auth, reg_date, readcount from 
+    	select rm, b_number, subject, content, writer, reg_date, readcount from
+       		(select rownum rm, b_number, subject, content, writer, reg_date, readcount from 
             	(select * from tbl_board where 1 = 1 and boardNum = 3]]>
              <include refid="search"></include> <![CDATA[ 
              	order by b_number desc)

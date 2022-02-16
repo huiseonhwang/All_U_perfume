@@ -9,7 +9,7 @@
     	<input type="hidden" name="boardnum" value="${boardDTO.boardnum}">
 		<input type="hidden" name="b_number" value="${boardDTO.b_number}">
     	제 목 : <input type="text" name="subject" /> <br />
-    	사용자 : <input type = "text" name="writer" id = "writer" value = ${boardDTO.writer}/> <br/>
+    	사용자 : <input type = "text" name="writer" id = "writer"> <br/>
     	PW : <input type = "password" name="password" /> <br />
     	<input type ="hidden" name ="auth" value="${boardDTO.auth}" />  <br />
     	내 용 : <textarea rows="10" cols="20" name="content"></textarea> <br />
