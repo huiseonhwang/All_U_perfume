@@ -33,6 +33,8 @@
 		<form action = "q_a_admin" method = "post">
 			<input type = "submit" value = "Q&A 게시판 관리" />
 		</form>
+		
+		<input type="button" value="로그아웃" onclick="window.location='/admin/logout'" />
 </c:if>
 
 </body>

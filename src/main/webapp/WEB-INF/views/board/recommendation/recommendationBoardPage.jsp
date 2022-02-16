@@ -62,19 +62,10 @@
 	sfsdfsdfsdfsdfsd
 	${sessionSope.id }
 	
-	<c:if test = "${sessionSope.aid != null }">
+
     <form action="/perfume/recommendation/write" method="post">
         <input type = "submit" value = "글 쓰기" />
     </form>
-    <input type = "button" value = "선택삭제" onclick="deleteValue();">
-</c:if>
-
-<c:if test = "${sessionSope.id != null }">
-    <form action="/perfume/recommendation/write" method="post">
-        <input type = "submit" value = "글 쓰기" />
-    </form>
-</c:if>
-
 
 
 <table border = "1" >

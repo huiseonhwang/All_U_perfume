@@ -6,10 +6,12 @@
 <title>공지사항 게시판</title>
 <h1> 공지사항 글 작성 </h1>
 
-    <form action="/perfume/notice/writePro" method="post">
+   <form action="/perfume/notice/writePro" method="post">
     	<input type="hidden" name="boardnum" value="${boardDTO.boardnum}">
 		<input type="hidden" name="b_number" value="${boardDTO.b_number}">
-    	제 목 : <input type="text" name="subject" /> 
+    	제 목 : <input type="text" name="subject" /> <br />
+    	사용자 : <input type = "text" name = "writer" value = "${boardDTO.writer }">
+    	PW : <input type = "password" name="password" /> <br />
     	<input type ="hidden" name ="auth" value="${boardDTO.auth}" />  <br />
     	내 용 : <textarea rows="10" cols="20" name="content"></textarea> <br />
     	첨부파일 : ${boardDTO.filename} <br /> 

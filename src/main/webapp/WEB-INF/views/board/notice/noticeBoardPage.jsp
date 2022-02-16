@@ -64,14 +64,14 @@
 	
 
   
-<c:if test ="${sessionScope.aid != null}" >
+
 
 	<form action="/perfume/notice/write" method="post">
 		<input type = "submit" value = "글 쓰기" />
 	</form>	
 
 	<input type ="button" value = "선택삭제" onclick = "deleteValue();" >
-</c:if>
+
 
 <table border = "1" >
 	<tr>
@@ -92,7 +92,7 @@
 		<td> <input name = "RowCheck" type = "checkbox" value="${boardDTO.b_number}"/></td>
 		<td> ${boardDTO.b_number} </td>
 		<td> <a href="/perfume/notice/noticeContent?b_number=${boardDTO.b_number}">${boardDTO.subject}</a> </td>
-		<td> ${boardDTO.auth} </td>
+		<td> ${boardDTO.writer} </td>
 		<td> ${boardDTO.reg_date} </td>
 		<td> ${boardDTO.readcount} </td>
 	</tr>

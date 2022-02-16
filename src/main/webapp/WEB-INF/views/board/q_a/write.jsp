@@ -9,13 +9,22 @@
     <form action="/perfume/q_a/writePro" method="post">
     	<input type="hidden" name="boardnum" value="${boardDTO.boardnum}">
 		<input type="hidden" name="b_number" value="${boardDTO.b_number}">
-		<input type="hidden" name="ref" value="${boardDataBean.ref}">
-		<input type="hidden" name="re_step" value="${boardDataBean.re_step}>">
-		<input type="hidden" name="re_level" value="${boardDataBean.re_level}">
+		<input type="hidden" name="b_number" value="${boardDTO.ref}">
+		<input type="hidden" name="b_number" value="${boardDTO.re_step}">
+		<input type="hidden" name="b_number" value="${boardDTO.re_level}">
     	제 목 : <input type="text" name="subject" /> 
-    	<input type = "text" name = "writer" value = "${boardDTO.writer }">
-    	<input type = "password" name = "password" value = "${boardDTO.password }">
+    	작성자 : <input type = "text" name = "writer">
+    	비밀번호 : <input type = "password" name = "password">
     	내 용 : <textarea rows="10" cols="20" name="content"></textarea> <br />
     	첨부파일 : ${boardDTO.filename} <br /> 
-    		   <input type="submit" value="글쓰기" />
+    	<input type="reset" value = "다시작성" />
+    	<input type="submit" value="글쓰기" />
     </form>
+    
+    <c:if test = "${boardDTO.b_number == 0}">
+    
+    </c:if>
+    
+    <c:if test = "${boardDTO.b_number != 0}">
+    
+    </c:if>

@@ -4,3 +4,7 @@
 	
 <h1>re_writePro.jsp</h1>
 	
+	<script>
+		alert("글쓰기 완료");
+		window.location="/perfume/q_a/list";
+	</script>

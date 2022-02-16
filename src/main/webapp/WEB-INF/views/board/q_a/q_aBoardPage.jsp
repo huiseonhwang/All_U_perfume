@@ -66,7 +66,7 @@
 	
 	
 
-		<form action = "write" method = "post">
+	<form action = "/perfume/q_a/write" method = "post">
 		<input type = "submit" value = "글 작성" />
 	</form>
 
